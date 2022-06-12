@@ -7,7 +7,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>pos-carts</artifactId>
+    <artifactId>pos-order</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -15,7 +15,7 @@
 
         <dependency>
             <groupId>com.micropos</groupId>
-            <artifactId>pos-products</artifactId>
+            <artifactId>pos-carts</artifactId>
             <version>0.0.1</version>
             <scope>compile</scope>
         </dependency>

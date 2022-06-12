@@ -14,6 +14,11 @@ spring:
           predicates:
             - Path=/cart/**
           filters:
+        - id: pos-order
+          uri: lb://pos-order
+          predicates:
+            - Path=/order/**
+          filters:
 
 server:
   port: 8080
