@@ -1,8 +1,11 @@
 package com.micropos.order.rest;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.micropos.carts.api.*;
 import com.micropos.carts.dto.*;
 import com.micropos.carts.mapper.ItemMapper;
+import com.micropos.carts.model.Item;
 import com.micropos.carts.service.CartService;
 
 import org.springframework.http.HttpStatus;
@@ -25,7 +28,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/order")
 @EnableDiscoveryClient
+@ComponentScan(basePackages = "com.micropos.carts.mapper")
 public class OrderController implements OrderApi {
+
+    private final ItemMapper itemMapper;
+
+    public OrderController(ItemMapper itemMapper) {
+        this.itemMapper = itemMapper;
+    }
 
     private List<ItemDto> getCart() throws Exception {
         String url = "http://localhost:8080/cart";
@@ -51,8 +61,14 @@ public class OrderController implements OrderApi {
 
         System.out.println(response.toString());
 
-        List<ItemDto> items = new ArrayList<>();
-        return items;
+        ObjectMapper mapper = new ObjectMapper();
+        Item[] items = mapper.readValue(response.toString(), Item[].class);
+
+        List<ItemDto> res = new ArrayList<>();
+        for (Item item : items)
+            res.add(itemMapper.toItemDto(item));
+            
+        return res;
     }
 
     @Override
@@ -62,8 +78,11 @@ public class OrderController implements OrderApi {
         try {
             items = getCart();
         } catch (Exception e) {
+            System.out.print("\n\n");
+            System.out.println(e);
+            System.out.print("\n\n");
         }
-        if (items.isEmpty()) {
+        if (items == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(items, HttpStatus.CREATED);

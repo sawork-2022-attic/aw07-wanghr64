@@ -15,6 +15,9 @@ public class Product implements Serializable {
         this.image = image;
     }
 
+    public Product() {
+    }
+
     public String getId() {
         return id;
     }
