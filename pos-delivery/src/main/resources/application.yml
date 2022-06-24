@@ -1,16 +1,11 @@
 spring:
-  application:
-    name: pos-order
   cloud:
-    # function:
-    #   definition: supplyLoan
+    function:
+      definition: checkLoan
     stream:
       function:
         bindings:
-          summitOrder-out-0: order
-      bindings:
-        loan:
-          destination: output
+          checkLoan-in-0: output
 
 ---
 spring:
@@ -24,4 +19,4 @@ eureka:
 
 ---
 server:
-  port: 8085
+  port: 8086

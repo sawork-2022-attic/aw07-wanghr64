@@ -7,11 +7,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>pos-order</artifactId>
+    <artifactId>pos-delivery</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
-
 
         <dependency>
             <groupId>com.micropos</groupId>

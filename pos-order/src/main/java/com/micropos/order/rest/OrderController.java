@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.context.annotation.ComponentScan;
 
 import java.io.BufferedReader;
@@ -33,8 +34,13 @@ public class OrderController implements OrderApi {
 
     private final ItemMapper itemMapper;
 
-    public OrderController(ItemMapper itemMapper) {
+    private final StreamBridge streamBridge;
+
+    private static final String bindingName = "summitOrder-out-0";
+
+    public OrderController(ItemMapper itemMapper, StreamBridge streamBridge) {
         this.itemMapper = itemMapper;
+        this.streamBridge = streamBridge;
     }
 
     private List<ItemDto> getCart() throws Exception {
@@ -64,10 +70,13 @@ public class OrderController implements OrderApi {
         ObjectMapper mapper = new ObjectMapper();
         Item[] items = mapper.readValue(response.toString(), Item[].class);
 
+        if (items != null && items.length > 0)
+            streamBridge.send(bindingName, items);
+
         List<ItemDto> res = new ArrayList<>();
         for (Item item : items)
             res.add(itemMapper.toItemDto(item));
-            
+
         return res;
     }
 
