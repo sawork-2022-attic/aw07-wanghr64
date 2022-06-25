@@ -1,11 +1,18 @@
 spring:
+  application:
+    name: pos-delivery
   cloud:
     function:
-      definition: checkLoan
+      definition: checkDelivery
     stream:
       function:
         bindings:
-          checkLoan-in-0: output
+          checkDelivery-in-0: summitOrder-out-0
+      rabbit:
+        bindings:
+          output:
+            consumer:
+              declare-exchange: false
 
 ---
 spring:

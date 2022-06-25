@@ -9,7 +9,7 @@ spring:
         bindings:
           summitOrder-out-0: order
       bindings:
-        loan:
+        order:
           destination: output
 
 ---
