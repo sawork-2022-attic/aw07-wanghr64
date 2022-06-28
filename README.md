@@ -22,8 +22,8 @@ Delivery Serive 通过 RabbitMQ 的消息机制，获取订单的信息并进行
 
 连续发送了 4 个相同的订单，RabbitMQ 界面的统计图如下：
 
-![](./pics/in.png)
+![](./pics/out.png)
 
 Postman 进行 `/delivery` 的 `GET` 请求，结果如下：
 
-![](./pics/out.png)
+![](./pics/in.png)
